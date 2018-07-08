@@ -67,7 +67,8 @@ public class CommandsService {
                         fileIO.clearExpensesByDate(FileIO.findDate(line));
                         break;
 
-                        case "total":
+                    case "total":
+                            System.out.println(fileIO.getTotalByCurrency(line.substring(line.length()-3, line.length()))+" "+line.substring(line.length()-3, line.length()));
                             break;
 
                             default:

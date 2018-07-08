@@ -1,4 +1,6 @@
 
+import com.sun.webkit.dom.DocumentImpl;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -155,8 +157,22 @@ public class FileIO {
         }
     }
 
-    public String getTotalByCurrency(String currency){
-        return null;
+    public double getTotalByCurrency(String currency){
+        double sum = 0, coversionRate;
+
+        List expenses = getListOfExpenses();
+        Iterator iterator = expenses.iterator();
+        Expense expense;
+
+        while(iterator.hasNext()){
+            expense = (Expense) iterator.next();
+
+            coversionRate = CurrencyConvertor.convert(expense.getCurrency(), currency);
+
+            sum+=expense.getMoneySpent()*coversionRate;
+        }
+
+        return sum;
     }
 
 }
