@@ -24,6 +24,24 @@ public class CommandsService {
         }
     }
 
+    private static String deleteChapersToFirstSpace(String string){
+        return string.substring(string.indexOf(" ")+1, string.length());
+    }
+
+    private static Expense getExpenseFromInput(String string){
+        string = string.replaceAll("[+^:,“”]","");
+        string = deleteChapersToFirstSpace(string);
+        Expense expense = new Expense();
+        expense.setDate(FileIO.findDate(string.substring(0, string.indexOf(" "))));
+        string = deleteChapersToFirstSpace(string);
+        expense.setMoneySpent(Float.valueOf(string.substring(0, string.indexOf(" "))));
+        string = deleteChapersToFirstSpace(string);
+        expense.setCurrency(string.substring(0, string.indexOf(" ")));
+        expense.setProductName(string.substring(string.indexOf(" ")+1, string.length()));
+
+        return expense;
+    }
+
     private static void input(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String line = " ";
@@ -42,10 +60,11 @@ public class CommandsService {
                         break;
 
                     case "add":
-
+                        fileIO.addExpenseEntry(getExpenseFromInput(line));
                         break;
 
                     case "clear":
+                        fileIO.clearExpensesByDate(FileIO.findDate(line));
                         break;
 
                         case "total":

@@ -1,32 +1,45 @@
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileIO {
 
     private File file = new File("./db.txt");
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     public FileIO() {
         try {
+
             file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /*public List findExpenses(String... strings){
-        while (strings.)
-    }*/
+    private void printAllData() {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
-    private Date findDate(String string){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String sCurrentLine;
+
+            while ((sCurrentLine = br.readLine()) != null) {
+                System.out.println(sCurrentLine);
+            }
+
+            System.out.println();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+        public static Date findDate(String string){
         Pattern p = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d");
         Matcher m = p.matcher(string);
         Date tempDate = null;
@@ -41,8 +54,37 @@ public class FileIO {
         return tempDate;
     }
 
-    public String addExpenseEntry(Expense expense){
-        return null;
+    public void addExpenseEntry(Expense expense){
+        try {
+            List<String> lines = Files.readAllLines(Paths.get("./db.txt"), StandardCharsets.UTF_8);
+            Iterator iterator = lines.iterator();
+            int counter = 0, lineNumber = -1;
+            while (iterator.hasNext()&&lineNumber==-1){
+                String line = (String) iterator.next();
+                if(line.equals(format.format(expense.getDate()))){
+                    while (iterator.hasNext()&&!((String) iterator.next()).isEmpty())
+                        counter++;
+                    lineNumber = counter;
+                }
+                counter++;
+            }
+
+            if(lineNumber!=-1){
+                lines.add(lineNumber, expense.toString());
+            }
+            else{
+                lines.add("");
+                lines.add(format.format(expense.getDate()));
+                lines.add(expense.toString());
+            }
+
+            Files.write(Paths.get("./db.txt"), lines, StandardCharsets.UTF_8);
+
+            printAllData();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public List getListOfExpenses(){
@@ -89,8 +131,28 @@ public class FileIO {
         return expenses;
     }
 
-    public String clearExpensesByDate(Date date){
-        return null;
+    public void clearExpensesByDate(Date date) {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get("./db.txt"), StandardCharsets.UTF_8);
+            Iterator iterator = lines.iterator();
+            while (iterator.hasNext()){
+                String line = (String) iterator.next();
+                if(line.equals(format.format(date))){
+                    iterator.remove();
+                    while (iterator.hasNext()&&!((String) iterator.next()).isEmpty())
+                        iterator.remove();
+                    if(iterator.hasNext())
+                        iterator.remove();
+                }
+            }
+
+            Files.write(Paths.get("./db.txt"), lines, StandardCharsets.UTF_8);
+
+            printAllData();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getTotalByCurrency(String currency){
