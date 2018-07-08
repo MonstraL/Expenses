@@ -1,11 +1,14 @@
 import java.util.Date;
 
-public class Expense {
+public class Expense implements Comparable<Expense> {
 
     private Date date;
     private String currency;
     private float moneySpent;
     private String productName;
+
+    public Expense() {
+    }
 
     public Date getDate() {
         return date;
@@ -20,7 +23,7 @@ public class Expense {
         return productName+" "+moneySpent+" "+currency;
     }
 
-    public Expense(Date date, float moneySpent, String productName, String currency) {
+    public Expense(Date date, String productName, float moneySpent, String currency) {
         this.date = date;
         this.currency = currency;
         this.moneySpent = moneySpent;
@@ -49,5 +52,10 @@ public class Expense {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    @Override
+    public int compareTo(Expense o) {
+        return getDate().compareTo(o.getDate());
     }
 }
