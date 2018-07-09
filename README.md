@@ -42,8 +42,12 @@ Browsers: Firefox
 
 ### Installing
 
-1. Build the Project (mvn)
-2. Test the newly compiled and packaged JAR.
+Go to project :
+
+1. open cmd
+2. cd <project directory>
+3. mvn clean install
+4. java -jar -Dapple.awt.UIElement="true" target/Expenses-1.0-SNAPSHOT.jar -h
 
 Or
 
