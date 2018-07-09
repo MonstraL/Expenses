@@ -89,28 +89,4 @@ public class CurrencyConvertor {
         return response;
     }
 
-    public static void main(String[] args) throws IOException {
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("What is your currency code ?");
-        String fromCurrencyCode = scanner.next();
-
-        System.out.println("Enter the Amount :");
-        double amount = scanner.nextDouble();
-
-        System.out.println("Enter the Currency Code that you want to covert : ");
-        String toCurrencyCode = scanner.next();
-
-        fromCurrencyCode = fromCurrencyCode.toUpperCase();
-        toCurrencyCode = toCurrencyCode.toUpperCase();
-
-        // Currency Conversion
-        double coversionRate = convert(fromCurrencyCode, toCurrencyCode);
-
-        System.out.println("Hi, The "+amount +" "+ fromCurrencyCode+" is equivalent to "+(coversionRate * amount)+" "+toCurrencyCode+" today.");
-
-        scanner.close();
-    }
-
 }
