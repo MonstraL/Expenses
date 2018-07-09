@@ -45,7 +45,7 @@ Browsers: Firefox
 Go to project :
 
 1. open cmd
-2. cd <project directory>
+2. cd [project directory]
 3. mvn clean install
 4. java -jar -Dapple.awt.UIElement="true" target/Expenses-1.0-SNAPSHOT.jar -h
 
